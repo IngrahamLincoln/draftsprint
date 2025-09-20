@@ -102,7 +102,7 @@ export default function OnboardingPage() {
             <div className="text-center mb-8">
               <BookOpen className="h-12 w-12 mx-auto mb-4 text-primary" />
               <h1 className="text-3xl font-bold tracking-tight mb-2">
-                Let's create your first project
+                Let&apos;s create your first project
               </h1>
               <p className="text-muted-foreground text-lg">
                 Tell us about the novel you want to write

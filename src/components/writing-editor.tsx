@@ -42,7 +42,6 @@ export function WritingEditor({
 
   const handleContentChange = (newContent: string) => {
     if (writeForwardEnabled && sessionActive) {
-      const currentSessionContent = newContent.substring(sessionStartContent.length);
       const sessionStartLength = sessionStartContent.length;
 
       if (newContent.length < sessionStartLength) {
@@ -92,7 +91,7 @@ export function WritingEditor({
   };
 
   const addNote = () => {
-    const selection = textareaRef.current?.getSelection?.() || '';
+    const selection = window.getSelection?.()?.toString() || '';
     const noteText = selection || `[fix later: ${new Date().toLocaleTimeString()}]`;
     setNotes([...notes, noteText]);
 

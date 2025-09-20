@@ -105,7 +105,7 @@ export default async function DashboardPage() {
                         <div>
                           <h4 className="font-medium text-lg">{project.title}</h4>
                           <p className="text-sm text-muted-foreground mt-1">
-                            {project.targetWords.toLocaleString()} word goal • {project.methodology}
+                            {project.targetWords?.toLocaleString() || 'No goal set'} word goal • {project.methodology}
                           </p>
                           <p className="text-xs text-muted-foreground mt-2">
                             Created {new Date(project.createdAt).toLocaleDateString()}

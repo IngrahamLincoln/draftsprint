@@ -1,7 +1,6 @@
 'use server';
 
 import { currentUser } from '@clerk/nextjs/server';
-import { redirect } from 'next/navigation';
 import { db } from '@/lib/db';
 import { users, profiles, projects, scenes } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
@@ -39,7 +38,7 @@ export async function createProject(data: CreateProjectData) {
     const userId = dbUser[0].id;
 
     // Check if user profile exists, if not create it
-    let profile = await db.select().from(profiles).where(eq(profiles.userId, userId)).limit(1);
+    const profile = await db.select().from(profiles).where(eq(profiles.userId, userId)).limit(1);
 
     if (profile.length === 0) {
       await db.insert(profiles).values({

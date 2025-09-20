@@ -58,10 +58,9 @@ interface ScenesPageClientProps {
   projectId: string;
 }
 
-export function ScenesPageClient({ projectId }: ScenesPageClientProps) {
+export function ScenesPageClient({}: ScenesPageClientProps) {
   const [scenes, setScenes] = useState<Scene[]>(MOCK_SCENES);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [editingScene, setEditingScene] = useState<string | null>(null);
   const [newScene, setNewScene] = useState({
     title: '',
     pov: '',
@@ -254,7 +253,7 @@ export function ScenesPageClient({ projectId }: ScenesPageClientProps) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => setEditingScene(scene.id)}
+                    onClick={() => console.log('Edit scene:', scene.id)}
                   >
                     <Edit3 className="h-4 w-4" />
                   </Button>
