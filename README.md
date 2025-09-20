@@ -1,36 +1,214 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DraftSprint
 
-## Getting Started
+> **Finish your first draft—systematically.**
 
-First, run the development server:
+DraftSprint is a focused writing app designed specifically for beginner novelists to complete their first full-length manuscript. Through habit scaffolding, scene-based structure, and anti-perfectionism mechanics, DraftSprint measurably increases draft completion rates.
 
+## ✨ Features
+
+### Core Writing Experience
+- **Distraction-Free Editor** - Minimal UI optimized for long-form writing
+- **Write-Forward Mode** - Anti-perfectionism guardrails to prevent endless editing
+- **Pomodoro Timer** - 15/25/50 minute focused writing sessions
+- **Auto-save** - Never lose your work with continuous background saving
+
+### Structure & Organization
+- **Scene-Based Structure** - Organize novels into manageable 1-2k word scenes
+- **Project Planning** - Set word count goals and track progress
+- **Snowflake Method Lite** - Optional story development framework
+
+### Progress & Motivation
+- **Daily Word Goals** - Configurable minimums with streak tracking
+- **Progress Visualization** - Charts, calendars, and completion predictions
+- **Achievement System** - Milestone badges for motivation
+- **Writing Calendar** - Visual heatmap of your writing activity
+
+### Additional Tools
+- **Session Notes** - Quick "fix later" annotations without breaking flow
+- **Import/Export** - Markdown and DOCX support with manuscript formatting
+- **Backup System** - Automatic daily snapshots of your work
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18+ and npm
+- A Neon PostgreSQL database
+- A Clerk account for authentication
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/draftsprint.git
+   cd draftsprint
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+
+   Copy `.env.local` and fill in your credentials:
+   ```bash
+   cp .env.local .env.local.example
+   ```
+
+   Required variables:
+   ```env
+   # Database (Neon PostgreSQL)
+   DATABASE_URL="postgresql://username:password@host/database"
+
+   # Clerk Authentication
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_..."
+   CLERK_SECRET_KEY="sk_test_..."
+   ```
+
+4. **Set up the database**
+   ```bash
+   npm run db:generate
+   npm run db:migrate
+   ```
+
+5. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+6. **Open your browser**
+
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 🗄️ Database Setup
+
+DraftSprint uses Drizzle ORM with PostgreSQL. The recommended setup is:
+
+1. **Create a Neon database** at [neon.tech](https://neon.tech)
+2. **Copy the connection string** to your `.env.local`
+3. **Run migrations** with `npm run db:migrate`
+
+### Database Schema
+
+Key tables include:
+- `users` & `profiles` - User accounts and preferences
+- `projects` - Novel projects with metadata
+- `scenes` & `scene_content` - Story structure and content
+- `sessions` - Writing session tracking
+- `daily_goals` - Streak and goal tracking
+- `achievements` - Milestone badges
+
+## 🔐 Authentication Setup
+
+DraftSprint uses Clerk for user authentication:
+
+1. **Create a Clerk application** at [clerk.com](https://clerk.com)
+2. **Copy your keys** to `.env.local`
+3. **Configure sign-in/sign-up URLs** (optional)
+
+Clerk handles:
+- Email/password authentication
+- OAuth providers (Google, GitHub, etc.)
+- User management and profiles
+- Session security
+
+## 📊 Key Metrics & Goals
+
+DraftSprint is designed to achieve:
+
+- **>60%** - Users complete first guided session within 24h
+- **>35%** - Users achieve 14-day writing streak by day 30
+- **>10%** - Users complete their first draft by day 90
+- **4+ sessions/week** - Median engagement for active users
+
+## 🎯 Product Philosophy
+
+### For Beginner Novelists
+- First-time writers need **completion systems**, not editing tools
+- **Habit formation** is more important than perfect prose
+- **Anti-perfectionism** prevents endless revision cycles
+
+### Evidence-Based Design
+- Only ~3% of aspiring novelists finish a first draft
+- **76-95%** completion rates are possible with proper scaffolding
+- Daily minimums + accountability = measurable results
+
+### Focused Scope
+**What DraftSprint Does:**
+✅ Habit scaffolding and session structure
+✅ Scene-based organization
+✅ Progress tracking and motivation
+✅ Write-forward anti-perfectionism tools
+
+**What DraftSprint Doesn't Do:**
+❌ Deep editorial feedback or AI writing
+❌ Community features or critique groups
+❌ Publishing business education
+❌ Complex plotting tools (beyond basics)
+
+## 🛠️ Development
+
+### Tech Stack
+- **Frontend:** Next.js 15 (App Router) + TypeScript
+- **Styling:** Tailwind CSS + shadcn/ui components
+- **Database:** PostgreSQL with Drizzle ORM
+- **Auth:** Clerk
+- **Hosting:** Vercel (recommended)
+
+### Available Scripts
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run db:generate  # Generate database migrations
+npm run db:migrate   # Run database migrations
+npm run db:studio    # Open Drizzle Studio
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Project Structure
+```
+src/
+├── app/                 # Next.js App Router pages
+│   ├── dashboard/       # Main dashboard
+│   ├── write/          # Writing session interface
+│   ├── onboarding/     # 3-step project setup
+│   ├── progress/       # Analytics and streaks
+│   └── project/        # Project management
+├── components/         # Reusable UI components
+│   ├── ui/            # Base components (shadcn/ui)
+│   ├── pomodoro-timer.tsx
+│   └── writing-editor.tsx
+├── lib/               # Utilities and database
+│   ├── db/           # Drizzle schema and connection
+│   └── utils.ts      # Helper functions
+└── middleware.ts     # Clerk authentication
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📝 Contributing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## Learn More
+### Code Style
+- Use TypeScript for type safety
+- Follow the existing component patterns
+- Write descriptive commit messages
+- Ensure tests pass before submitting
 
-To learn more about Next.js, take a look at the following resources:
+## 📄 License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🎉 Acknowledgments
 
-## Deploy on Vercel
+- Inspired by the [Snowflake Method](https://www.advancedfictionwriting.com/articles/snowflake-method/) by Randy Ingermanson
+- UI components powered by [shadcn/ui](https://ui.shadcn.com/)
+- Built with [Next.js](https://nextjs.org/) and [Clerk](https://clerk.com/)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Ready to finish your first draft?** [Get started with DraftSprint](http://localhost:3000) and turn your writing dreams into reality.
