@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Plus, BookOpen, Target, Flame } from 'lucide-react';
+import { getUserProjects } from '@/lib/actions';
 
 export default async function DashboardPage() {
   const user = await currentUser();
@@ -10,6 +11,8 @@ export default async function DashboardPage() {
   if (!user) {
     redirect('/sign-in');
   }
+
+  const projects = await getUserProjects();
 
   return (
     <div className="min-h-screen bg-background">
@@ -82,17 +85,49 @@ export default async function DashboardPage() {
               <h3 className="text-lg font-semibold mb-4">Recent Projects</h3>
             </div>
             <div className="p-6 pt-0">
-              <div className="text-center py-8 text-muted-foreground">
-                <BookOpen className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p className="text-lg font-medium mb-2">No projects yet</p>
-                <p className="text-sm mb-4">Create your first project to start your writing journey</p>
-                <Link href="/onboarding">
-                  <Button>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Create Project
-                  </Button>
-                </Link>
-              </div>
+              {projects.length === 0 ? (
+                <div className="text-center py-8 text-muted-foreground">
+                  <BookOpen className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <p className="text-lg font-medium mb-2">No projects yet</p>
+                  <p className="text-sm mb-4">Create your first project to start your writing journey</p>
+                  <Link href="/onboarding">
+                    <Button>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Create Project
+                    </Button>
+                  </Link>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {projects.map((project) => (
+                    <div key={project.id} className="border rounded-lg p-4 hover:bg-accent/50 transition-colors">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h4 className="font-medium text-lg">{project.title}</h4>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            {project.targetWords.toLocaleString()} word goal • {project.methodology}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-2">
+                            Created {new Date(project.createdAt).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <div className="flex gap-2">
+                          <Link href={`/project/${project.id}/scenes`}>
+                            <Button variant="outline" size="sm">
+                              Scenes
+                            </Button>
+                          </Link>
+                          <Link href="/write">
+                            <Button size="sm">
+                              Write
+                            </Button>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 

@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ArrowLeft, ArrowRight, BookOpen } from 'lucide-react';
 import Link from 'next/link';
+import { createProject } from '@/lib/actions';
+import { useRouter } from 'next/navigation';
 
 type OnboardingStep = 'project' | 'goals' | 'structure';
 
@@ -31,6 +33,8 @@ const METHODOLOGY_OPTIONS = [
 
 export default function OnboardingPage() {
   const [step, setStep] = useState<OnboardingStep>('project');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
   const [formData, setFormData] = useState({
     title: '',
     targetWords: 70000,
@@ -40,11 +44,25 @@ export default function OnboardingPage() {
     methodology: 'scenes',
   });
 
-  const handleNext = () => {
-    if (step === 'project') setStep('goals');
-    else if (step === 'goals') setStep('structure');
-    else {
-      console.log('Creating project with:', formData);
+  const handleNext = async () => {
+    if (step === 'project') {
+      setStep('goals');
+    } else if (step === 'goals') {
+      setStep('structure');
+    } else {
+      // Create project
+      setIsSubmitting(true);
+      try {
+        const result = await createProject(formData);
+        if (result.success) {
+          router.push(`/project/${result.projectId}/scenes`);
+        }
+      } catch (error) {
+        console.error('Error creating project:', error);
+        alert('Failed to create project. Please try again.');
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -244,11 +262,11 @@ export default function OnboardingPage() {
           </div>
           <Button
             onClick={handleNext}
-            disabled={!canProceed()}
+            disabled={!canProceed() || isSubmitting}
             className="gap-2"
           >
-            {step === 'structure' ? 'Create Project' : 'Next'}
-            {step !== 'structure' && <ArrowRight className="h-4 w-4" />}
+            {isSubmitting ? 'Creating...' : step === 'structure' ? 'Create Project' : 'Next'}
+            {step !== 'structure' && !isSubmitting && <ArrowRight className="h-4 w-4" />}
           </Button>
         </div>
       </main>
